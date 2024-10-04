@@ -17,8 +17,23 @@ server.register(cors, {
 // CREATE
 server.post('/candidatos', async (request, reply) => {
     const body = request.body;
+    let error = {}
+    if(!body.name){
+        error.name='Erro no name';
+    }
+    if(!body.partido){
+        error.partido='Erro no partido';
+    }
+    if(!body.numero){
+        error.numero='Erro no numero';
+    }
+    if(body.name && body.partido && body.numero){
     await databasePostgres.createCandidato(body);
-    return reply.status(201).send();
+    return reply.status(201).send('deu bom');
+    } else {
+        return error = reply.status(400).send(error);
+    }
+    
 })
 
 // READE
